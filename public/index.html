@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jul.IA | Petição Inicial Empréstimo Consignado</title>
+  <!-- Montserrat (com fallback se offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#121212; --card:#1E1E1E; --border:#2D2D2D;
+      --text:#EAEAEA; --muted:#AAAAAA;
+      --primary:#0D99FF; --primary-hover:#0B7ACC; --accent:#4DB8FF;
+      --radius:16px; --pad:18px; --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif}
+    a{color:var(--accent)}
+    .container{max-width:1140px;margin:0 auto;padding:24px}
+    header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+    .brand{font-weight:700;letter-spacing:.2px}
+    .brand span{opacity:.9}
+    .subtitle{color:var(--accent);font-weight:600}
+    .grid{display:grid;grid-template-columns:1fr;gap:var(--gap)}
+    @media(min-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:var(--pad);box-shadow:0 0 0 1px rgba(0,0,0,.12), 0 6px 18px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 10px 0;font-size:20px}
+    .card h3{margin:8px 0 10px 0;font-size:16px;color:var(--muted)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{width:100%;background:#161616;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:14px;outline:none}
+    textarea{min-height:140px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:700px){.row{grid-template-columns:repeat(2,1fr)}}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .btn{appearance:none;border:none;cursor:pointer;background:var(--primary);color:#fff;padding:12px 16px;border-radius:12px;font-weight:600}
+    .btn:hover{background:var(--primary-hover)}
+    .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .badge{display:inline-block;background:#0e2233;color:#9ed0ff;border:1px solid #204a6b;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600}
+    .muted{color:var(--muted)}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid var(--border);padding:10px;text-align:left;font-size:13px; vertical-align:middle}
+    th{font-size:12px;color:var(--muted);letter-spacing:.3px}
+    tfoot td{font-weight:700}
+    .right{text-align:right}
+    .toggle{display:flex;align-items:center;gap:10px}
+    .switch{position:relative;width:44px;height:26px;background:#2a2a2a;border-radius:999px;border:1px solid var(--border);flex:0 0 auto}
+    .switch input{display:none}
+    .knob{position:absolute;top:2px;left:2px;width:20px;height:20px;background:#777;border-radius:50%;transition:.2s ease}
+    .switch input:checked + .knob{left:22px;background:var(--primary)}
+    footer{margin:26px 0 8px;color:var(--muted);text-align:center;font-size:12px}
+    .hl{color:var(--accent);font-weight:600}
+    .preview{white-space:pre-wrap;background:#161616;border:1px dashed var(--border);padding:12px;border-radius:10px;color:#d7efff}
+    .hint{font-size:12px;color:var(--muted)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .onecol{grid-column:1 / -1}
+    .mm, .aa { width:72px; text-align:center }
+    .slash { padding:0 4px; display:inline-block; color:var(--muted) }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">Jul.IA <span>| Plataforma Inteligente de Petições</span></div>
+      <div class="subtitle">Petição Inicial Empréstimo Consignado</div>
+    </header>
+
+    <div class="grid">
+      <section class="card onecol" id="q1-enderecamento">
+        <h2>1) Endereçamento da peça</h2>
+        <div class="row">
+          <div>
+            <label>Estado (UF)</label>
+            <select id="uf"></select>
+          </div>
+          <div>
+            <label>Cidade</label>
+            <select id="cidade"></select>
+            <div class="actions" style="margin-top:8px">
+              <button class="btn ghost" type="button" id="btnCidadeManual">Entrada manual</button>
+              <input id="cidadeManual" placeholder="Digite a cidade" style="display:none" />
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Tipo de Órgão (maiúsculas)</label>
+            <div class="actions">
+              <button type="button" class="btn ghost" data-orgao="DA VARA CÍVEL">DA VARA CÍVEL</button>
+              <button type="button" class="btn ghost" data-orgao="DO JUIZADO ESPECIAL CÍVEL">DO JUIZADO ESPECIAL CÍVEL</button>
+              <button type="button" class="btn ghost" data-orgao="DA VARA CÍVEL FEDERAL">DA VARA CÍVEL FEDERAL</button>
+              <button type="button" class="btn ghost" data-orgao="DO JUIZADO ESPECIAL CÍVEL FEDERAL">DO JUIZADO ESPECIAL CÍVEL FEDERAL</button>
+            </div>
+            <input id="tipoOrgao" class="mono" readonly placeholder="Selecione acima" />
+          </div>
+          <div>
+            <label>Prévia (formatação da peça)</label>
+            <div class="preview" id="prevEnd"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card onecol" id="q2-autora">
+        <h2>2) Dados da Parte Autora</h2>
+        <label>Cole o TXT exatamente no formato do formulário</label>
+        <textarea id="txtAutora" class="mono" placeholder="Nome completo: &#10;Nacionalidade: &#10;Data de nascimento: &#10;Estado civil: &#10;Profissão: &#10;RG:  - ESTADO: &#10;CPF: &#10;ENDEREÇO COMPLETO: , nº: , complemento:  &#10;Bairro: &#10;CEP: &#10;CIDADE: , ESTADO: &#10;WhatsApp COM DDD: &#10;E-mail: "></textarea>
+        <div class="actions">
+          <button class="btn" id="btnParse">Extrair dados</button>
+          <span class="hint">Dica: o parser aceita letras maiúsculas/minúsculas nos rótulos.</span>
+        </div>
+        <h3>Pré-visualização no molde do DOCX</h3>
+        <div class="preview" id="prevAutora"></div>
+      </section>
+
+      <section class="card onecol" id="q3-re">
+        <h2>3) Dados da Parte Ré</h2>
+        <div class="row">
+          <div>
+            <label>CNPJ</label>
+            <input id="cnpj" placeholder="00.000.000/0001-00" />
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <div class="actions">
+              <label class="toggle">
+                <div class="switch"><input type="checkbox" id="lookupOn" checked><span class="knob"></span></div>
+                <span>Usar busca online (A/B)</span>
+              </label>
+              <button type="button" class="btn" id="btnBuscarCNPJ">Buscar</button>
+              <button type="button" class="btn ghost" id="btnEditarRe">Editar manual</button>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div>
+            <label>Razão Social</label>
+            <input id="NOME_EMPRESA" />
+          </div>
+          <div>
+            <label>Logradouro</label>
+            <input id="LOG_RE" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Número</label>
+            <input id="N_RE" />
+          </div>
+          <div>
+            <label>Complemento</label>
+            <input id="COMPL_RE" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Bairro</label>
+            <input id="BAIRRO_RE" />
+          </div>
+          <div>
+            <label>Cidade / UF</label>
+            <div class="row">
+              <input id="CIDADE_RE" placeholder="Cidade" />
+              <input id="UF_RE" placeholder="UF" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>CEP</label>
+            <input id="CEP_RE" />
+          </div>
+          <div>
+            <label>Resumo</label>
+            <div id="prevRe" class="preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card onecol" id="q4-contratos">
+        <h2>4) Tabela dos Contratos Revisados (II.1)</h2>
+        <div class="actions">
+          <button class="btn" id="btnAddLinha">+ Adicionar linha</button>
+          <button class="btn ghost" id="btnLimparLinhas">Limpar</button>
+          <span class="badge" id="badgeAtivo">HAS_ATIVO: false</span>
+        </div>
+        <div style="overflow:auto;margin-top:10px">
+          <table id="tabContratos">
+            <thead>
+              <tr>
+                <th>Nº Contrato</th>
+                <th>Início (MM/AA)</th>
+                <th>Fim (MM/AA)</th>
+                <th>Situação</th>
+                <th class="right">Parcela R$</th>
+                <th class="right">Pago</th>
+                <th class="right">A Pagar</th>
+                <th>Cópia</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5" class="right">Total Pago</td>
+                <td class="right" id="totPago">0,00</td>
+                <td colspan="3"></td>
+              </tr>
+              <tr>
+                <td colspan="5" class="right">Total em Dobro (VALOR_INDEVIDO_DOBRO)</td>
+                <td class="right" id="totDobro">0,00</td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="toggle">
+            <div class="switch"><input type="checkbox" id="mostraTutela" checked><span class="knob"></span></div>
+            <span>Forçar TUTELA ANTECIPADA (MOSTRAR_TUTELA)</span>
+          </div>
+          <div>
+            <label>Prévia — Nome da Ação</label>
+            <div id="prevAcao" class="preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card onecol" id="q5-saida">
+        <h2>6) Geração do Documento</h2>
+        <div class="actions">
+          <button class="btn" id="btnDocx">Gerar DOCX</button>
+          <button class="btn" id="btnPdf">Gerar PDF</button>
+          <button class="btn" id="btnAmbos">Gerar DOCX e PDF</button>
+          <span class="hint">Os arquivos serão preenchidos no template <span class="mono">template_peticaoconsig.docx</span>.</span>
+        </div>
+        <div id="links" class="actions" style="margin-top:12px"></div>
+      </section>
+
+    </div>
+
+    <footer>
+      © 2025 Juliano Garbuggio – Advocacia & Consultoria | Powered by Jul.IA – Inteligência Jurídica Automatizada
+    </footer>
+  </div>
+
+  <script>
+    const BR_UF = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const num = v => { if(v===undefined||v===null||v==="") return 0; const n = (""+v).replace(/\./g, "").replace(/,/g, "."); const f = parseFloat(n); return isNaN(f)?0:f; };
+    const brl = v => (num(v)).toLocaleString("pt-BR", {minimumFractionDigits:2, maximumFractionDigits:2});
+    function hojeBR(){ const d = new Date(); const meses = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]; return { dia: ("0"+(d.getDate())).slice(-2), mesExt: meses[d.getMonth()], ano: d.getFullYear() }; }
+    function mesesEntre(mm_ini, aa_ini, mm_fim, aa_fim){ return Math.max(0, (aa_fim - aa_ini)*12 + (mm_fim - mm_ini) + 1); }
+    function mesesDecorridos(mm_ini, aa_ini){ const d=new Date(); const mm=d.getMonth()+1; const aa=d.getFullYear(); return Math.max(0, (aa-aa_ini)*12 + (mm-mm_ini) + 1); }
+    function setBadgeAtivo(flag){ const b = $("#badgeAtivo"); b.textContent = `HAS_ATIVO: ${flag}`; b.style.background = flag?"#0b2a3f":"#2a2a2a"; b.style.color = flag?"#a7e1ff":"#aaa"; b.style.borderColor = flag?"#204a6b":"#444"; }
+
+    async function fetchEstadosCidades(){
+      let data = null, ok = false;
+      try { const rFull = await fetch('/static/estados_cidades_full.json'); if (rFull.ok) { data = await rFull.json(); ok = true; } } catch(_) {}
+      if (!ok) { try { const rCompact = await fetch('/static/estados_cidades.json'); if (rCompact.ok) { data = await rCompact.json(); ok = true; } } catch(_) {} }
+      return ok ? data : null;
+    }
+
+    function initUF(){
+      const ufSel = $("#uf");
+      ufSel.innerHTML = `<option value="">Selecione a UF</option>` + BR_UF.map(uf=>`<option value="${uf}">${uf}</option>`).join("");
+      ufSel.addEventListener("change", onUFChange);
+    }
+    async function onUFChange(){
+      const uf = $("#uf").value;
+      const cidSel = $("#cidade");
+      $("#cidadeManual").style.display = "none";
+      try{
+        const data = await fetchEstadosCidades();
+        if (data) {
+          const cities = (data[uf]||[]).sort((a,b)=>a.localeCompare(b));
+          cidSel.innerHTML = `<option value="">Selecione a cidade</option>` + cities.map(c=>`<option value="${c}">${c}</option>`).join("");
+        } else {
+          cidSel.innerHTML = `<option value="">(carregue manualmente)</option>`;
+        }
+      }catch(e){
+        cidSel.innerHTML = `<option value="">(carregue manualmente)</option>`;
+      }
+      updateEndPreview();
+    }
+
+    function bindOrgaoButtons(){
+      $$("[data-orgao]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          $("#tipoOrgao").value = btn.getAttribute("data-orgao");
+          updateEndPreview();
+        });
+      });
+      $("#cidade").addEventListener("change", updateEndPreview);
+      $("#btnCidadeManual").addEventListener("click", ()=>{
+        const im = $("#cidadeManual");
+        const sel = $("#cidade");
+        im.style.display = im.style.display==="none"?"block":"none";
+        if(im.style.display!=="none"){ sel.value=""; }
+        updateEndPreview();
+      });
+      $("#cidadeManual").addEventListener("input", updateEndPreview);
+    }
+    function updateEndPreview(){
+      const uf = $("#uf").value || "UF";
+      const cidadeSel = $("#cidade").value;
+      const cidadeMan = $("#cidadeManual").style.display!=="none" ? $("#cidadeManual").value : "";
+      const cidade = cidadeSel || cidadeMan || "CIDADE";
+      const orgao = $("#tipoOrgao").value || "(TIPO DO ÓRGÃO)";
+      $("#prevEnd").textContent = `EXCELENTÍSSIMO/A SENHOR/A DOUTOR/A\nJUIZ/A DE DIREITO ${orgao} DA COMARCA DE ${cidade} - ${uf}`;
+    }
+
+    function parseAutora(txt){
+      const lines = txt.split(/\r?\n/);
+      const get = (label) => { const re = new RegExp(`^\\s*${label}\\s*:(.*)$`,'i'); for(const L of lines){ const m = L.match(re); if(m) return m[1].trim(); } return ""; };
+      const endComp = get("ENDEREÇO COMPLETO");
+      let LOGRADOURO="", NUMERO="", COMPLEMENTO="";
+      if(endComp){
+        const m1 = endComp.match(/^(.*?)(?:,\s*n[ºo:]\s*|,\s*nº\s*|,\s*no\s*|,\s*n\.)\s*([^,]+)(?:,\s*complemento:\s*(.*))?$/i);
+        if(m1){ LOGRADOURO=m1[1].trim(); NUMERO=(m1[2]||"").trim(); COMPLEMENTO=(m1[3]||"").trim(); }
+        else { LOGRADOURO=endComp; }
+      }
+      const RGEST = get("RG");
+      let RG="", ESTADO_RG="";
+      if(RGEST){
+        const m = RGEST.match(/([\d\.\-A-Za-z]+)\s*[-–]\s*ESTADO\s*:\s*([A-Za-z]{2})/i);
+        if(m){ RG=m[1].trim(); ESTADO_RG=m[2].toUpperCase(); }
+        else { RG=RGEST; }
+      }
+      const cidadeEstado = get("CIDADE");
+      let CIDADE="", ESTADO="";
+      if(cidadeEstado){
+        const m = cidadeEstado.match(/^(.*?),\s*ESTADO:\s*([A-Za-z]{2})/i);
+        if(m){ CIDADE=m[1].trim(); ESTADO=m[2].toUpperCase(); }
+        else { CIDADE=cidadeEstado; }
+      }
+      return {
+        NOME_COMPLETO:get("Nome completo"),
+        NACIONALIDADE:get("Nacionalidade"),
+        NASCIMENTO:get("Data de nascimento"),
+        ESTADO_CIVIL:get("Estado civil"),
+        PROFISSAO:get("Profissão"),
+        RG, ESTADO_RG,
+        CPF:get("CPF"),
+        LOGRADOURO, NUMERO, COMPLEMENTO,
+        BAIRRO:get("Bairro"), CEP:get("CEP"),
+        CIDADE, ESTADO,
+        WHATSAPP:get("WhatsApp COM DDD"),
+        EMAIL:get("E-mail")
+      };
+    }
+    function renderAutoraPrev(a){
+      const txt = `${a.NOME_COMPLETO||"[NOME]"}, ${a.NACIONALIDADE||"[NACIONALIDADE]"}, nascida(o) aos ${a.NASCIMENTO||"[DATA]"}, ${a.ESTADO_CIVIL||"[EST.CIVIL]"}, ${a.PROFISSAO||"[PROFISSÃO]"}, RG ${a.RG||"[RG]"} - ${a.ESTADO_RG||"[UF]"}, CPF ${a.CPF||"[CPF]"}, residente a ${a.LOGRADOURO||"[LOGRADOURO]"}, nº ${a.NUMERO||"[Nº]"}, ${a.COMPLEMENTO||""}, ${a.BAIRRO||"[BAIRRO]"}, CEP: ${a.CEP||"[CEP]"}, em ${a.CIDADE||"[CIDADE]"}, ${a.ESTADO||"[UF]"}, ${a.WHATSAPP||"[WHATSAPP]"}, ${a.EMAIL||"[EMAIL]"}`;
+      $("#prevAutora").textContent = txt;
+    }
+
+    function setReFields(d){
+      if(!d) return;
+      $("#NOME_EMPRESA").value = d.nome || d.razao_social || d.nome_fantasia || "";
+      $("#LOG_RE").value = d.logradouro || d.street || "";
+      $("#N_RE").value = d.numero || d.number || "";
+      $("#COMPL_RE").value = d.complemento || d.complement || "";
+      $("#BAIRRO_RE").value = d.bairro || d.neighborhood || "";
+      $("#CIDADE_RE").value = d.municipio || d.city || "";
+      $("#UF_RE").value = (d.uf || d.state || "").toUpperCase();
+      $("#CEP_RE").value = d.cep || d.postal_code || "";
+      renderRePrev();
+    }
+    function renderRePrev(){
+      const n = $("#NOME_EMPRESA").value||"[NOME EMPRESA]";
+      const cnpj = $("#cnpj").value||"[CNPJ]";
+      const l = $("#LOG_RE").value||"[LOG]";
+      const nr = $("#N_RE").value||"s/nº";
+      const cp = $("#COMPL_RE").value||"";
+      const b = $("#BAIRRO_RE").value||"[BAIRRO]";
+      const cid = $("#CIDADE_RE").value||"[CIDADE]";
+      const uf = $("#UF_RE").value||"UF";
+      const cep = $("#CEP_RE").value||"[CEP]";
+      $("#prevRe").textContent = `${n}, pessoa jurídica inscrita no CNPJ ${cnpj}, sita a ${l}, nº ${nr}, compl. ${cp}, ${b}, ${cid} / ${uf}, CEP ${cep}`;
+    }
+
+    async function buscarCNPJ(){
+      const usarLookup = $("#lookupOn").checked;
+      if(!usarLookup){ renderRePrev(); return; }
+      const cnpjRaw = $("#cnpj").value || "";
+      const cnpj = cnpjRaw.replace(/\D/g, "");
+      if(cnpj.length!==14){ alert("CNPJ inválido"); return; }
+      const tries = [
+        `/api/cnpj/brasilapi/${cnpj}`,
+        `/api/cnpj/receitaws/${cnpj}`,
+        `https://brasilapi.com.br/api/cnpj/v1/${cnpj}`,
+        `https://www.receitaws.com.br/v1/cnpj/${cnpj}`
+      ];
+      for (const url of tries){
+        try{
+          const r = await fetch(url, {mode: url.startsWith('http') ? 'cors' : 'same-origin'});
+          if(r.ok){
+            const data = await r.json();
+            setReFields(data);
+            return;
+          }
+        }catch(_){}
+      }
+      alert("Não foi possível obter dados online. Preencha manualmente.");
+    }
+
+    let LINHA_ID = 0;
+    function addLinha(v={}){
+      const tbody = $("#tabContratos tbody");
+      const id = ++LINHA_ID;
+      const tr = document.createElement('tr');
+      tr.dataset.id = id;
+      tr.innerHTML = `
+        <td><input placeholder="Nº" data-k="numero"></td>
+        <td>
+          <input class="mm" placeholder="MM" maxlength="2" pattern="\\d{2}" data-k="ini_mm">
+          <span class="slash">/</span>
+          <input class="aa" placeholder="AA" maxlength="2" pattern="\\d{2}" data-k="ini_aa">
+        </td>
+        <td>
+          <input class="mm" placeholder="MM" maxlength="2" pattern="\\d{2}" data-k="fim_mm">
+          <span class="slash">/</span>
+          <input class="aa" placeholder="AA" maxlength="2" pattern="\\d{2}" data-k="fim_aa">
+        </td>
+        <td>
+          <select data-k="situacao">
+            <option value="ENCERRADO">ENCERRADO</option>
+            <option value="ATIVO">ATIVO</option>
+          </select>
+        </td>
+        <td class="right"><input placeholder="0,00" data-k="parcela"></td>
+        <td class="right"><span data-k="pago">0,00</span></td>
+        <td class="right"><span data-k="apagar">0,00</span></td>
+        <td>
+          <select data-k="copia">
+            <option>SIM</option>
+            <option>NÃO</option>
+          </select>
+        </td>
+        <td class="right"><button class="btn ghost" data-del>Remover</button></td>
+      `;
+      tbody.appendChild(tr);
+      if(v && Object.keys(v).length){
+        setTimeout(()=>{
+          tr.querySelector('[data-k="numero"]').value = v.numero||"";
+          tr.querySelector('[data-k="ini_mm"]').value = v.ini_mm||"";
+          tr.querySelector('[data-k="ini_aa"]').value = v.ini_aa||"";
+          tr.querySelector('[data-k="fim_mm"]').value = v.fim_mm||"";
+          tr.querySelector('[data-k="fim_aa"]').value = v.fim_aa||"";
+          tr.querySelector('[data-k="situacao"]').value = v.situacao||"ENCERRADO";
+          tr.querySelector('[data-k="parcela"]').value = v.parcela||"";
+          tr.querySelector('[data-k="copia"]').value = v.copia||"SIM";
+          recalc();
+        });
+      }
+    }
+    function collectLinhas(){
+      return $$("#tabContratos tbody tr").map(tr=>{
+        const g=k=>{ const el = tr.querySelector(`[data-k="${k}"]`); return el? (el.tagName==='SPAN'?el.textContent:el.value):""; };
+        return {
+          numero:g('numero'), ini_mm:num(g('ini_mm')), ini_aa:num(g('ini_aa')),
+          fim_mm:num(g('fim_mm')), fim_aa:num(g('fim_aa')),
+          situacao:g('situacao'), parcela:num(g('parcela')),
+          pago:num(g('pago')), a_pagar:num(g('apagar')),
+          copia:g('copia')
+        };
+      });
+    }
+    function recalc(){
+      const trs = $$("#tabContratos tbody tr");
+      let hasAtivo=false, totPago=0;
+      trs.forEach(tr=>{
+        const v = k=>tr.querySelector(`[data-k="${k}"]`);
+        const ini_mm=num(v('ini_mm').value), ini_aa=num(v('ini_aa').value);
+        const fim_mm=num(v('fim_mm').value), fim_aa=num(v('fim_aa').value);
+        const situ = v('situacao').value;
+        const parcela = num(v('parcela').value);
+        let pago=0, apagar=0;
+        if(ini_mm && ini_aa && fim_mm && fim_aa && parcela){
+          if(situ==="ENCERRADO"){
+            const m = mesesEntre(ini_mm,ini_aa,fim_mm,fim_aa);
+            pago = m * parcela;
+          } else {
+            hasAtivo = true;
+            const dec = mesesDecorridos(ini_mm, ini_aa);
+            pago = dec * parcela;
+            const mTot = mesesEntre(ini_mm,ini_aa,fim_mm,fim_aa) * parcela;
+            apagar = Math.max(0, mTot - pago);
+          }
+        }
+        tr.querySelector('[data-k="pago"]').textContent = brl(pago);
+        tr.querySelector('[data-k="apagar"]').textContent = brl(apagar);
+        totPago += pago;
+      });
+      setBadgeAtivo(hasAtivo);
+      $("#totPago").textContent = brl(totPago);
+      $("#totDobro").textContent = brl(totPago*2);
+      renderNomeAcao(hasAtivo);
+    }
+    function renderNomeAcao(hasAtivo){
+      const base = "AÇÃO DECLARATÓRIA DE NULIDADE CONTRATUAL C/C ";
+      const meio = hasAtivo?"TUTELA ANTECIPADA ":"";
+      const fim = "REPETIÇÃO DE INDÉBITO E DANOS MORAIS";
+      $("#prevAcao").textContent = base + meio + fim;
+    }
+
+    function contexto(){
+      const aut = parseAutora($("#txtAutora").value||"");
+      const uf = $("#uf").value || aut.ESTADO || "";
+      const cidadeSel = $("#cidade").value;
+      const cidadeMan = $("#cidadeManual").style.display!=="none" ? $("#cidadeManual").value : "";
+      const cidade = cidadeSel || cidadeMan || aut.CIDADE || "";
+      const tipo = $("#tipoOrgao").value || "";
+      const linhas = collectLinhas();
+      const HAS_ATIVO = linhas.some(l=>l.situacao==="ATIVO");
+      const VALOR_PAGO_INDEVIDO = linhas.reduce((s,l)=>s + (l.pago||0), 0);
+      const VALOR_INDEVIDO_DOBRO = VALOR_PAGO_INDEVIDO*2;
+      const {dia, mesExt, ano} = hojeBR();
+      const MOSTRAR_TUTELA = $("#mostraTutela").checked;
+      const re = {
+        NOME_EMPRESA:$("#NOME_EMPRESA").value,
+        CNPJ: $("#cnpj").value,
+        LOG_RE: $("#LOG_RE").value,
+        N_RE: $("#N_RE").value,
+        COMPL_RE: $("#COMPL_RE").value,
+        BAIRRO_RE: $("#BAIRRO_RE").value,
+        CIDADE_RE: $("#CIDADE_RE").value,
+        UF_RE: $("#UF_RE").value,
+        CEP_RE: $("#CEP_RE").value,
+      };
+      const ctxContratos = {};
+      linhas.forEach((l,idx)=>{
+        const i = idx+1;
+        ctxContratos[`CT${i}_NUMERO`] = l.numero;
+        ctxContratos[`CT${i}_INICIO_MM`] = String(l.ini_mm||"").padStart(2,'0');
+        ctxContratos[`CT${i}_INICIO_AA`] = String(l.ini_aa||"").padStart(2,'0');
+        ctxContratos[`CT${i}_FIM_MM`]   = String(l.fim_mm||"").padStart(2,'0');
+        ctxContratos[`CT${i}_FIM_AA`]   = String(l.fim_aa||"").padStart(2,'0');
+        ctxContratos[`CT${i}_SITUACAO`] = l.situacao||"";
+        ctxContratos[`CT${i}_PARCELA`]  = brl(l.parcela||0);
+        ctxContratos[`CT${i}_PAGO`]     = brl(l.pago||0);
+        ctxContratos[`CT${i}_APAGAR`]   = brl(l.a_pagar||0);
+        ctxContratos[`CT${i}_COPIA`]    = l.copia||"";
+      });
+      const ctx = {
+        TIPO_ORGAO: tipo,
+        CIDADE: cidade,
+        ESTADO: uf,
+        ...aut,
+        ...re,
+        ...ctxContratos,
+        VALOR_PAGO_INDEVIDO: brl(VALOR_PAGO_INDEVIDO),
+        VALOR_INDEVIDO_DOBRO: brl(VALOR_INDEVIDO_DOBRO),
+        VALOR_CAUSA: brl(VALOR_INDEVIDO_DOBRO),
+        HAS_ATIVO, MOSTRAR_TUTELA,
+        DIA: (""+dia), MES_EXTENSO: mesExt, ANO: (""+ano)
+      };
+      return ctx;
+    }
+
+    async function gerar(tipo){
+      const ctx = contexto();
+      const endpoint = tipo==='both'?'/api/generate/both':(tipo==='pdf'?'/api/generate/pdf':'/api/generate/docx');
+      try{
+        const r = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({template:'template_peticaoconsig.docx', context:ctx}) });
+        if(!r.ok){ throw new Error('Falha na geração'); }
+        const data = await r.json();
+        const k = $("#links"); k.innerHTML = '';
+        if(data.docx_url){
+          const a = document.createElement('a'); a.href=data.docx_url; a.textContent='Baixar DOCX'; a.className='btn'; a.download='peticao.docx'; k.appendChild(a);
+        }
+        if(data.pdf_url){
+          const a = document.createElement('a'); a.href=data.pdf_url; a.textContent='Baixar PDF'; a.className='btn'; a.download='peticao.pdf'; k.appendChild(a);
+        }
+      }catch(e){
+        alert('Geração indisponível (abra via http e rode o backend).');
+      }
+    }
+
+    function bindEvents(){
+      $("#btnParse").addEventListener('click', ()=>{ const a=parseAutora($("#txtAutora").value||""); renderAutoraPrev(a); updateEndPreview(); });
+      ["#NOME_EMPRESA","#LOG_RE","#N_RE","#COMPL_RE","#BAIRRO_RE","#CIDADE_RE","#UF_RE","#CEP_RE","#cnpj"].forEach(sel=> $(sel).addEventListener('input', renderRePrev));
+      $("#btnBuscarCNPJ").addEventListener('click', buscarCNPJ);
+      $("#btnEditarRe").addEventListener('click', ()=>{ ["#NOME_EMPRESA","#LOG_RE","#N_RE","#COMPL_RE","#BAIRRO_RE","#CIDADE_RE","#UF_RE","#CEP_RE"].forEach(s=>$(s).removeAttribute('readonly')); alert('Campos liberados para edição.'); });
+      $("#btnAddLinha").addEventListener('click', ()=> addLinha());
+      $("#btnLimparLinhas").addEventListener('click', ()=>{ $("#tabContratos tbody").innerHTML=''; recalc(); });
+      $("#tabContratos").addEventListener('input', (e)=>{ if(e.target.closest('tbody')) recalc(); });
+      $("#tabContratos").addEventListener('click', (e)=>{ const b=e.target.closest('[data-del]'); if(b){ b.closest('tr').remove(); recalc(); } });
+      $("#mostraTutela").addEventListener('change', ()=>{ renderNomeAcao(collectLinhas().some(l=>l.situacao==='ATIVO')); });
+      $("#btnDocx").addEventListener('click', ()=>gerar('docx'));
+      $("#btnPdf").addEventListener('click', ()=>gerar('pdf'));
+      $("#btnAmbos").addEventListener('click', ()=>gerar('both'));
+    }
+    (function boot(){
+      initUF(); bindOrgaoButtons(); bindEvents();
+      addLinha(); addLinha(); addLinha();
+      recalc(); updateEndPreview(); renderRePrev(); renderNomeAcao(false);
+    })();
+  </script>
+</body>
+</html>
